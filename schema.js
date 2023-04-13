@@ -1,24 +1,45 @@
-// schema.js
 const { gql } = require('apollo-server');
 
 const typeDefs = gql`
-  type Employee {
+type Contact {
     id: ID!
     firstName: String!
     lastName: String!
-    email: String!
+    middleName: String
     age: Int!
+    gender: Gender!
   }
-
+  
+  enum Gender {
+    MALE
+    FEMALE
+    OTHER
+  }
+  
   type Query {
-    hello: String
-    getEmployee(id: ID!): Employee
-    getEmployees: [Employee]
+    getContact(id: ID!): Contact
+    getAllContacts: [Contact!]!
   }
-
+  
   type Mutation {
-    addEmployee(firstName: String!, lastName: String!, email: String!, age: Int!): Employee
+    createContact(input: ContactInput!): Contact!
+    updateContact(id: ID!, input: ContactInput!): Contact!
+    deleteContact(id: ID!): ID!
   }
-`;
+  
+  input ContactInput {
+    firstName: String!
+    lastName: String!
+    middleName: String
+    age: Int!
+    gender: Gender!
+  }
+  
+  schema {
+    query: Query
+    mutation: Mutation
+  }
+  
+`
 
-module.exports = typeDefs;
+module.exports = typeDefs; 
